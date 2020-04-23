@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+    <title>AirNote</title>
+
+</head>
+
+<body onload="init()">
+
+    <center>
+        <h1>AirNote</h1>
+        <h2>Makes notes online, collaborate with friends easily!</h2>
+
+        <br/><br/>
+        <a href="app.html"><button><h1>+ Start a session</h1></button></a>
+        <br/><br/><br/>
+
+        <div id="last"></div>
+    </center>
+
+</body>
+
+
+
+<script>
+    if (localStorage.getItem("data")) {
+        var x = localStorage.getItem("data");
+        document.getElementById("last").innerHTML = "  <h2>Last session:</h2> <a href=\" " + x + "\"> <button><h1>Go to last session</h1></button></a>";
+    }
+</script>
+<style>
+    html {
+        height: 100%;
+    }
+    
+    body {
+        height: 100%;
+        overflow: hidden;
+        background-color: #1A73E8;
+        color: white;
+        font-family: 'Manrope', sans-serif;
+    }
+    
+    button {
+        border: 10px;
+        width: 30%;
+        height: 60%;
+        padding: 22px 22px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        font-family: 'Manrope', sans-serif;
+        display: inline-block;
+        color: #1A73E8;
+    }
+    
+    #userlist {
+        position: absolute;
+        padding-top: 10px;
+        height: auto;
+        left: 0px;
+        width: 175px;
+    }
+    
+    #firepad {
+        position: absolute;
+        left: 175px;
+        padding-top: 50px;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        height: auto;
+    }
+    
+    .powered-by-firebase {
+        visibility: hidden;
+    }
+</style>
+
+</html>

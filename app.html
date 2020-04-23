@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+    <!-- CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
+    <title>AirNote Web App</title>
+    <!-- Firepad -->
+    <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
+    <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+
+</head>
+
+<body onload="init()">
+
+    <center>
+        <h1>AirNote</h1>
+
+        <br/><br/><br/>
+        <div style="padding: 100px;">
+            <div id="userlist"></div>
+            <div id="firepad"></div>
+        </div>
+    </center>
+
+</body>
+
+
+
+<script>
+    function init() {
+        var config = {
+            apiKey: "AIzaSyA6ECZRjPlYjdotKNwPxE2gV-U0s9PG9eo",
+            authDomain: "airnote-app.firebaseapp.com",
+            databaseURL: "https://airnote-app.firebaseio.com",
+        };
+        firebase.initializeApp(config);
+        var firepadRef = getExampleRef();
+        var codeMirror = CodeMirror(document.getElementById('firepad'), {
+            lineWrapping: true
+        });
+        var userId = Math.floor(Math.random() * 9999999999).toString();
+
+        var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror, {
+            richTextToolbar: true,
+            richTextShortcuts: true,
+            userId: userId
+        });
+
+        var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
+            document.getElementById('userlist'), userId);
+
+        firepad.on('ready', function() {
+            if (firepad.isHistoryEmpty()) {
+                firepad.setText('These notes are saved online, if you want to review or edit them later just save the URL!');
+            }
+        });
+        alert("Copy the tab address and share it with your freinds to collaborate!")
+    }
+
+    function getExampleRef() {
+        var ref = firebase.database().ref();
+        var hash = window.location.hash.replace(/#/g, '');
+        if (hash) {
+            ref = ref.child(hash);
+        } else {
+            ref = ref.push();
+            window.location = window.location + '#' + ref.key;
+        }
+        if (typeof console !== 'undefined') {
+            console.log('Firebase data: ', ref.toString());
+        }
+        return ref;
+    }
+    localStorage.setItem("data", window.location.href);
+</script>
+<style>
+    html {
+        height: 100%;
+    }
+    
+    body {
+        height: 100%;
+        overflow: hidden;
+        background-color: #1A73E8;
+        color: white;
+        font-family: 'Manrope', sans-serif;
+    }
+    
+    #userlist {
+        position: absolute;
+        padding-top: 10px;
+        height: auto;
+        left: 0px;
+        width: 175px;
+    }
+    
+    #firepad {
+        position: absolute;
+        left: 175px;
+        padding-top: 50px;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        height: auto;
+    }
+    
+    .powered-by-firebase {
+        visibility: hidden;
+    }
+</style>
+
+</html>
